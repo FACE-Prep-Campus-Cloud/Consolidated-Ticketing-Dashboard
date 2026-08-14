@@ -309,7 +309,7 @@ function renderSidebar(){
   // "All colleges" pinned item
   if(!q){
     const allActive = selectedCollege === null;
-    html += `<button class="sb-item sb-allitem ${allActive?'active':''}" onclick="selectCollege(null)">
+    html += `<button class="sb-item sb-allitem ${allActive?'active':''}" data-all="1">
       <div class="sb-item-top">
         <span class="sb-item-name">All Colleges</span>
         <span class="sb-item-count">${allTotal}</span>
@@ -326,7 +326,7 @@ function renderSidebar(){
   html += names.map(name => {
     const s = summary[name];
     const active = selectedCollege === name;
-    return `<button class="sb-item ${active?'active':''}" onclick="selectCollege(${JSON.stringify(name)})">
+    return `<button class="sb-item ${active?'active':''}" data-college="${escHTML(name)}">
       <div class="sb-item-top">
         <span class="sb-item-name" title="${escHTML(name)}">${escHTML(name)}</span>
         <span class="sb-item-count">${s.total}</span>
@@ -336,6 +336,12 @@ function renderSidebar(){
   }).join('');
   listEl.innerHTML = html;
 }
+$('sb-list').addEventListener('click', e => {
+  const btn = e.target.closest('.sb-item');
+  if(!btn) return;
+  if(btn.hasAttribute('data-all')) selectCollege(null);
+  else selectCollege(btn.dataset.college);
+});
 function aggregateAllCategories(){
   const byCat = {};
   tickets.forEach(t => { const c = t.category || 'Other'; byCat[c] = (byCat[c]||0)+1; });
@@ -399,7 +405,7 @@ function renderMain(){
     const color = categoryColor(cat);
     const pct = Math.round((v.count/scope.length)*100);
     const fillPct = (v.count/max)*100;
-    return `<button class="cat-card" style="--cat-color:${color}" onclick="openDrawer(${JSON.stringify(cat)})">
+    return `<button class="cat-card" style="--cat-color:${color}" data-category="${escHTML(cat)}">
       <div class="cat-card-top">
         <span class="cat-chip"></span>
         <span class="cat-name">${escHTML(cat)}</span>
@@ -414,6 +420,11 @@ function renderMain(){
     </button>`;
   }).join('');
 }
+$('cat-grid').addEventListener('click', e => {
+  const btn = e.target.closest('.cat-card');
+  if(!btn) return;
+  openDrawer(btn.dataset.category);
+});
 
 /* ── Drawer: ticket details for a category (name + problem) ── */
 function openDrawer(category){
