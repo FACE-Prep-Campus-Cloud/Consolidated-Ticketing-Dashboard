@@ -38,52 +38,16 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-s
 ::-webkit-scrollbar-thumb:hover{background:#C6C9C3;}
 :focus-visible{outline:2px solid var(--orange);outline-offset:2px;}
 
-.bg-glow{display:none;}
-
-.shell{position:relative;z-index:1;display:flex;height:100vh;overflow:hidden;padding:18px;gap:16px;}
-
-/* ── Sidebar / roster ── */
-.sidebar{width:300px;flex-shrink:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);display:flex;flex-direction:column;height:100%;box-shadow:var(--shadow-md);}
-.sidebar-head{padding:22px 20px 16px;border-bottom:1px solid var(--line);position:relative;}
-.sb-mark{display:flex;align-items:center;gap:11px;}
-.sb-mark-icon{width:38px;height:38px;border-radius:13px;background:var(--dark);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:13px;color:var(--orange);flex-shrink:0;}
-.sb-eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
-.sb-title{font-family:'Inter',sans-serif;font-size:19px;font-weight:900;letter-spacing:-.02em;color:var(--ink);line-height:1.15;text-transform:uppercase;}
-.sb-sub{font-size:11.5px;color:var(--ink-dim);margin-top:10px;line-height:1.55;}
-.sb-search{margin:14px 20px 6px;position:relative;}
-.sb-search input{width:100%;padding:10px 12px 10px 32px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);font-size:12.5px;color:var(--ink);outline:none;transition:border-color .15s,background .15s;}
-.sb-search input::placeholder{color:var(--ink-faint);}
-.sb-search input:focus{border-color:var(--orange);background:var(--surface);}
-.sb-search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:13px;height:13px;color:var(--ink-faint);pointer-events:none;}
-.sb-list{flex:1;overflow-y:auto;padding:8px 12px 20px;}
-.sb-item{display:flex;flex-direction:column;gap:9px;width:100%;text-align:left;padding:13px 14px;border-radius:var(--r-md);border:1px solid var(--line-soft);background:var(--surface-2);cursor:pointer;margin-bottom:8px;transition:background .12s,border-color .12s,transform .12s;}
-.sb-item:hover{transform:translateX(3px);border-color:var(--line);}
-.sb-item.active{background:var(--dark);border-color:var(--dark);}
-.sb-item-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.sb-item-name{font-size:11px;font-weight:700;color:var(--ink);line-height:1.35;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
-.sb-item.active .sb-item-name{color:#fff;}
-.sb-item-count{font-family:'Inter',sans-serif;font-size:12px;font-weight:800;color:var(--ink);background:#fff;border-radius:8px;padding:2px 8px;flex-shrink:0;border:1px solid var(--line);}
-.sb-item.active .sb-item-count{background:var(--orange);color:#fff;border-color:var(--orange);}
-.sb-item-bar{display:flex;height:6px;border-radius:99px;overflow:hidden;background:#E7E9E4;}
-.sb-item.active .sb-item-bar{background:rgba(255,255,255,.14);}
-.sb-item-bar span{height:100%;}
-.sb-allitem{border:1px solid var(--line);background:var(--surface);}
-.sb-allitem .sb-item-name{font-family:'Inter',sans-serif;font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:-.01em;}
-.sb-empty{padding:30px 14px;text-align:center;color:var(--ink-faint);font-size:12px;}
-.sb-foot{padding:14px 20px 18px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.sb-foot-meta{font-size:10.5px;color:var(--ink-faint);line-height:1.5;font-family:'Inter',sans-serif;font-weight:600;}
-.sb-refresh{width:32px;height:32px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .12s,color .12s;}
-.sb-refresh:hover{background:var(--dark);color:#fff;}
-.sb-refresh svg{width:13px;height:13px;}
-@keyframes spin{to{transform:rotate(360deg);}}
-.sb-refresh.spinning svg{animation:spin .7s linear infinite;}
+.shell{position:relative;z-index:1;display:flex;height:100vh;overflow:hidden;padding:18px;}
 
 /* ── Main ── */
 .main{flex:1;min-width:0;display:flex;flex-direction:column;height:100%;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-md);}
 .main-head{padding:26px 32px 0;flex-shrink:0;}
-.mh-crumb{font-size:11.5px;color:var(--ink-faint);font-weight:700;display:flex;align-items:center;gap:8px;}
-.mh-crumb b{color:var(--orange-dark);font-weight:800;}
-.mh-titlerow{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-top:9px;flex-wrap:wrap;}
+.mh-mark{display:flex;align-items:center;gap:11px;margin-bottom:18px;}
+.mh-mark-icon{width:38px;height:38px;border-radius:13px;background:var(--dark);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:13px;color:var(--orange);flex-shrink:0;}
+.mh-eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
+.mh-brandname{font-family:'Inter',sans-serif;font-size:15px;font-weight:900;letter-spacing:-.01em;color:var(--ink);line-height:1.15;text-transform:uppercase;}
+.mh-titlerow{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
 .mh-title{font-family:'Inter',sans-serif;font-size:32px;font-weight:900;letter-spacing:-.03em;color:var(--ink);text-transform:uppercase;}
 .mh-ticker{display:flex;gap:10px;}
 .mh-tick{padding:12px 20px;text-align:left;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line);min-width:88px;}
@@ -94,11 +58,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-s
 .mh-tick.is-open span{color:rgba(255,255,255,.5);}
 .mh-tick.is-resolved b{color:var(--mint);}
 .mh-toolrow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:22px;flex-wrap:wrap;}
-.view-toggle{display:none;gap:4px;background:var(--dark);border-radius:99px;padding:4px;}
-.view-toggle.show{display:inline-flex;}
-.view-toggle button{padding:8px 16px;border-radius:99px;border:none;background:transparent;color:rgba(255,255,255,.55);font-size:12px;font-weight:700;cursor:pointer;transition:background .15s,color .15s;}
-.view-toggle button.active{background:var(--orange);color:#fff;}
 .mh-hint{font-size:11.5px;color:var(--ink-faint);font-weight:500;}
+.sb-refresh{width:32px;height:32px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .12s,color .12s;}
+.sb-refresh:hover{background:var(--dark);color:#fff;}
+.sb-refresh svg{width:13px;height:13px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.sb-refresh.spinning svg{animation:spin .7s linear infinite;}
 .mh-divider{height:1px;background:var(--line);margin:18px 0 0;}
 
 .main-body{flex:1;min-height:0;overflow-y:auto;padding:22px 32px 40px;}
@@ -114,27 +79,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-s
 .mx-colhead .mx-label{writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font-size:10.5px;font-weight:700;color:var(--ink-dim);letter-spacing:.01em;white-space:nowrap;max-height:112px;overflow:hidden;text-overflow:ellipsis;}
 .mx-rowhead{position:sticky;left:0;z-index:3;background:var(--surface-2);border-right:1px solid var(--line);border-bottom:1px solid var(--line-soft);display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 16px;cursor:pointer;transition:background .12s;}
 .mx-rowhead:hover{background:#EBEDE8;}
-.mx-rowhead-name{font-size:12px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.mx-rowhead-name{font-size:11px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .mx-rowhead-count{font-family:'Inter',sans-serif;font-size:10.5px;font-weight:800;color:var(--ink-faint);flex-shrink:0;}
 .mx-cell{display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:11px;font-weight:800;color:var(--ink);border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);cursor:pointer;position:relative;transition:filter .1s;}
 .mx-cell:hover{filter:brightness(1.06);}
 .mx-cell.empty{cursor:default;color:var(--ink-faint);font-weight:500;}
 .mx-cell.empty:hover{filter:none;}
-
-/* ── Leaderboard (single-college / aggregated) ── */
-.lb-list{display:flex;flex-direction:column;gap:12px;max-width:820px;}
-.lb-row{display:flex;align-items:center;gap:16px;padding:16px 18px;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);cursor:pointer;transition:transform .13s,border-color .13s,background .13s;}
-.lb-row:hover{transform:translateX(4px);border-color:rgba(20,20,20,.16);}
-.lb-rank{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;color:var(--ink-faint);width:20px;flex-shrink:0;}
-.lb-stamp{width:42px;height:42px;border-radius:50%;border:1.6px solid var(--cat-color,var(--orange));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--cat-color,var(--orange));flex-shrink:0;background:#fff;}
-.lb-body{flex:1;min-width:0;}
-.lb-name{font-size:14px;font-weight:800;color:var(--ink);}
-.lb-track{height:8px;border-radius:99px;background:#E5E7E2;overflow:hidden;margin-top:9px;}
-.lb-fill{height:100%;border-radius:99px;transition:width .5s cubic-bezier(.16,1,.3,1);}
-.lb-open{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--orange-dark);font-weight:700;margin-top:7px;}
-.lb-open .dot{width:5px;height:5px;border-radius:50%;background:var(--orange-dark);}
-.lb-count{font-family:'Inter',sans-serif;font-size:22px;font-weight:900;color:var(--ink);width:48px;text-align:right;flex-shrink:0;}
-.lb-arrow{color:var(--ink-faint);flex-shrink:0;}
 
 .empty-block{padding:80px 20px;text-align:center;color:var(--ink-dim);}
 .empty-block .ic{width:64px;height:64px;border-radius:18px;background:var(--surface-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--ink-faint);}
@@ -189,58 +139,28 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-s
 .drawer-empty{padding:44px 10px;text-align:center;color:var(--ink-faint);font-size:12.5px;}
 
 @media (max-width:860px){
-  .shell{padding:0;gap:0;}
-  .sidebar{position:fixed;left:-308px;z-index:60;transition:left .22s;border-radius:0;height:100vh;}
-  .sidebar.mobile-open{left:0;}
+  .shell{padding:0;}
   .main{border-radius:0;border:none;}
   .main-head,.main-body{padding-left:18px;padding-right:18px;}
-  .mobile-menu-btn{display:flex !important;}
-  .mh-ticker{display:none;}
-  .matrix-wrap{display:none;}
   .drawer{top:0;right:0;bottom:0;border-radius:0;}
 }
-.mobile-menu-btn{display:none;width:34px;height:34px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);align-items:center;justify-content:center;cursor:pointer;color:var(--ink);flex-shrink:0;}
 @media (prefers-reduced-motion:reduce){ *{animation:none !important;transition:none !important;} }
 .hidden{display:none !important;}
 </style>
 </head>
 <body>
-<div class="bg-glow"><span class="g1"></span><span class="g2"></span><span class="g3"></span></div>
 <div class="shell">
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-head">
-      <div class="sb-mark">
-        <div class="sb-mark-icon">FP</div>
-        <div>
-          <div class="sb-eyebrow">Campus Help Desk</div>
-          <div class="sb-title">Insight Deck</div>
-        </div>
-      </div>
-      <div class="sb-sub">Where tickets cluster, college by college.</div>
-    </div>
-    <div class="sb-search">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><line x1="10.8" y1="10.8" x2="14" y2="14"/></svg>
-      <input id="sb-search-input" type="text" placeholder="Search colleges…" oninput="renderSidebar()" />
-    </div>
-    <div class="sb-list" id="sb-list"></div>
-    <div class="sb-foot">
-      <div class="sb-foot-meta" id="sb-foot-meta">Loading…</div>
-      <button class="sb-refresh" id="sb-refresh-btn" title="Refresh">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><polyline points="13.5,2.5 13.5,6 10,6"/></svg>
-      </button>
-    </div>
-  </aside>
-
   <div class="main">
     <div class="main-head">
-      <div class="mh-crumb">
-        <button class="mobile-menu-btn" id="mobile-menu-btn">
-          <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/></svg>
-        </button>
-        Insight Deck / <b id="mh-crumb-current">All Colleges</b>
+      <div class="mh-mark">
+        <div class="mh-mark-icon">FP</div>
+        <div>
+          <div class="mh-eyebrow">Campus Help Desk</div>
+          <div class="mh-brandname">Insight Deck</div>
+        </div>
       </div>
       <div class="mh-titlerow">
-        <div class="mh-title" id="mh-title">All Colleges</div>
+        <div class="mh-title">All Colleges</div>
         <div class="mh-ticker">
           <div class="mh-tick"><b id="mh-stat-total">0</b><span>Tickets</span></div>
           <div class="mh-tick is-open"><b id="mh-stat-open">0</b><span>Unresolved</span></div>
@@ -249,11 +169,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-s
         </div>
       </div>
       <div class="mh-toolrow">
-        <div class="mh-hint" id="mh-hint">Every cell is a college × category. Darker means busier — click any cell to see the tickets.</div>
-        <div class="view-toggle" id="view-toggle">
-          <button data-mode="matrix" id="vt-matrix">Matrix</button>
-          <button data-mode="leaderboard" id="vt-leaderboard">Leaderboard</button>
-        </div>
+        <div class="mh-hint">Every cell is a college × category. Darker means busier — click any cell to see the tickets.</div>
+        <button class="sb-refresh" id="sb-refresh-btn" title="Refresh">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><polyline points="13.5,2.5 13.5,6 10,6"/></svg>
+        </button>
       </div>
       <div class="mh-divider"></div>
     </div>
@@ -262,7 +181,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-s
         <div class="skel-row"></div><div class="skel-row"></div><div class="skel-row"></div><div class="skel-row"></div>
       </div>
       <div class="matrix-wrap hidden" id="matrix-wrap"><div class="matrix-grid" id="matrix-grid"></div></div>
-      <div class="lb-list hidden" id="lb-list"></div>
       <div class="empty-block hidden" id="empty-block"></div>
     </div>
   </div>
@@ -336,31 +254,27 @@ function hexToRgba(hex, alpha){
 
 /* ── State ── */
 let tickets = [];
-let selectedCollege = null;      // null = "All colleges"
-let allViewMode = window.innerWidth > 860 ? 'matrix' : 'leaderboard'; // only relevant when selectedCollege===null
 let activeDrawerCategory = null;
-let activeDrawerCollege = null;  // null = scope is "all colleges" for the open drawer
+let activeDrawerCollege = null;
 
 async function loadAll(manual){
   const btn = $('sb-refresh-btn');
   if(manual && btn) btn.classList.add('spinning');
-  if(!tickets.length){ show($('skel-grid')); hide($('matrix-wrap')); hide($('lb-list')); hide($('empty-block')); }
+  if(!tickets.length){ show($('skel-grid')); hide($('matrix-wrap')); hide($('empty-block')); }
   try{
     const { data, error } = await sb.from('tickets').select('*').order('created_at', { ascending:false });
     if(error) throw error;
     tickets = data || [];
-    $('sb-foot-meta').textContent = `Synced ${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}`;
   }catch(e){
     console.error(e);
-    $('sb-foot-meta').textContent = 'Sync failed';
   }finally{
     if(manual && btn) setTimeout(()=>btn.classList.remove('spinning'), 400);
-    renderSidebar();
     renderMain();
   }
 }
+$('sb-refresh-btn').addEventListener('click', () => loadAll(true));
 
-/* ── Sidebar: college roster ── */
+/* ── Aggregation helpers ── */
 function buildCollegeSummary(){
   const map = {};
   tickets.forEach(t => {
@@ -378,120 +292,29 @@ function aggregateAllCategories(){
   tickets.forEach(t => { const c = t.category || 'Other'; byCat[c] = (byCat[c]||0)+1; });
   return byCat;
 }
-function renderSidebar(){
-  const listEl = $('sb-list');
-  const summary = buildCollegeSummary();
-  const q = ($('sb-search-input').value||'').toLowerCase().trim();
-  const allTotal = tickets.length;
-
-  let html = '';
-  if(!q){
-    const allActive = selectedCollege === null;
-    html += `<button class="sb-item sb-allitem ${allActive?'active':''}" data-all="1">
-      <div class="sb-item-top">
-        <span class="sb-item-name">All Colleges</span>
-        <span class="sb-item-count">${allTotal}</span>
-      </div>
-      ${miniBarHTML(aggregateAllCategories())}
-    </button>`;
-  }
-
-  const names = Object.keys(summary).filter(n => n.toLowerCase().includes(q)).sort((a,b) => summary[b].total - summary[a].total);
-  if(!names.length){
-    listEl.innerHTML = html || `<div class="sb-empty">No colleges match “${escHTML(q)}”.</div>`;
-    return;
-  }
-  html += names.map(name => {
-    const s = summary[name];
-    const active = selectedCollege === name;
-    return `<button class="sb-item ${active?'active':''}" data-college="${escHTML(name)}">
-      <div class="sb-item-top">
-        <span class="sb-item-name" title="${escHTML(name)}">${escHTML(name)}</span>
-        <span class="sb-item-count">${s.total}</span>
-      </div>
-      ${miniBarHTML(s.byCat)}
-    </button>`;
-  }).join('');
-  listEl.innerHTML = html;
-}
-function miniBarHTML(byCat){
-  const total = Object.values(byCat).reduce((a,b)=>a+b,0);
-  if(!total) return `<div class="sb-item-bar"></div>`;
-  const segs = Object.entries(byCat).sort((a,b)=>b[1]-a[1]).map(([cat,val]) =>
-    `<span style="width:${(val/total*100)}%;background:${categoryColor(cat)}" title="${escHTML(cat)}: ${val}"></span>`).join('');
-  return `<div class="sb-item-bar">${segs}</div>`;
-}
-$('sb-list').addEventListener('click', e => {
-  const btn = e.target.closest('.sb-item');
-  if(!btn) return;
-  selectCollege(btn.hasAttribute('data-all') ? null : btn.dataset.college);
-});
-$('sb-refresh-btn').addEventListener('click', () => loadAll(true));
-$('mobile-menu-btn').addEventListener('click', () => $('sidebar').classList.toggle('mobile-open'));
-function selectCollege(name){
-  selectedCollege = name;
-  renderSidebar();
-  renderMain();
-  if(window.innerWidth <= 860) $('sidebar').classList.remove('mobile-open');
-}
 
 /* ── Main ── */
-function scopedTickets(){
-  return selectedCollege === null ? tickets : tickets.filter(t => (t.college||'Unspecified') === selectedCollege);
-}
-function setViewToggleUI(){
-  const toggle = $('view-toggle');
-  if(selectedCollege === null){
-    toggle.classList.add('show');
-    $('vt-matrix').classList.toggle('active', allViewMode === 'matrix');
-    $('vt-leaderboard').classList.toggle('active', allViewMode === 'leaderboard');
-  } else {
-    toggle.classList.remove('show');
-  }
-}
-$('vt-matrix').addEventListener('click', () => { allViewMode = 'matrix'; renderMain(); });
-$('vt-leaderboard').addEventListener('click', () => { allViewMode = 'leaderboard'; renderMain(); });
-
 function renderMain(){
   hide($('skel-grid'));
-  const scope = scopedTickets();
-  $('mh-title').textContent = selectedCollege === null ? 'All Colleges' : selectedCollege;
-  $('mh-crumb-current').textContent = selectedCollege === null ? 'All Colleges' : selectedCollege;
-  $('mh-stat-total').textContent = scope.length;
-  $('mh-stat-open').textContent = scope.filter(t => t.status !== 'resolved').length;
-  $('mh-stat-resolved').textContent = scope.filter(t => t.status === 'resolved').length;
-  setViewToggleUI();
+  $('mh-stat-total').textContent = tickets.length;
+  $('mh-stat-open').textContent = tickets.filter(t => t.status !== 'resolved').length;
+  $('mh-stat-resolved').textContent = tickets.filter(t => t.status === 'resolved').length;
+  $('mh-stat-cats').textContent = Object.keys(aggregateAllCategories()).length;
 
-  const byCat = {};
-  scope.forEach(t => {
-    const cat = t.category || 'Other';
-    if(!byCat[cat]) byCat[cat] = { count:0, open:0 };
-    byCat[cat].count++;
-    if(t.status !== 'resolved') byCat[cat].open++;
-  });
-  const catCount = Object.keys(byCat).length;
-  $('mh-stat-cats').textContent = catCount;
+  hide($('matrix-wrap')); hide($('empty-block'));
 
-  hide($('matrix-wrap')); hide($('lb-list')); hide($('empty-block'));
-
-  if(!scope.length){
+  if(!tickets.length){
     show($('empty-block'));
     $('empty-block').innerHTML = `
       <div class="ic"><svg width="26" height="26" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="13" height="10" rx="2"/><path d="M1.5 6h13"/></svg></div>
       <strong>No tickets yet</strong>
-      <p>${selectedCollege ? escHTML(selectedCollege) + ' has no tickets on record.' : 'Nothing to show yet.'}</p>`;
+      <p>Nothing to show yet.</p>`;
     return;
   }
-
-  const useMatrix = selectedCollege === null && allViewMode === 'matrix' && window.innerWidth > 860;
-  $('mh-hint').textContent = useMatrix
-    ? 'Every cell is a college × category. Darker means busier — click any cell to see the tickets.'
-    : 'Ranked by ticket volume. Click a category to see who reported what.';
-
-  if(useMatrix) renderMatrix(); else renderLeaderboard(scope, byCat);
+  renderMatrix();
 }
 
-/* ── Matrix (heatmap) view ── */
+/* ── Matrix (heatmap) view — the only view ── */
 function renderMatrix(){
   const wrap = $('matrix-wrap'); const grid = $('matrix-grid');
   show(wrap);
@@ -533,37 +356,9 @@ $('matrix-grid').addEventListener('click', e => {
   const cell = e.target.closest('.mx-cell:not(.empty)');
   if(cell){ openDrawer(cell.dataset.category, cell.dataset.college); return; }
   const rowhead = e.target.closest('.mx-rowhead');
-  if(rowhead){ selectCollege(rowhead.dataset.rowcollege); return; }
+  if(rowhead){ openDrawer(null, rowhead.dataset.rowcollege); return; }
   const colhead = e.target.closest('.mx-colhead');
   if(colhead){ openDrawer(colhead.dataset.category, null); return; }
-});
-
-/* ── Leaderboard view ── */
-function renderLeaderboard(scope, byCat){
-  const listEl = $('lb-list');
-  show(listEl);
-  const entries = Object.entries(byCat).sort((a,b) => b[1].count - a[1].count);
-  const max = Math.max(...entries.map(([,v]) => v.count), 1);
-  listEl.innerHTML = entries.map(([cat, v], i) => {
-    const color = categoryColor(cat);
-    const pct = Math.round((v.count/scope.length)*100);
-    return `<button class="lb-row" data-category="${escHTML(cat)}">
-      <span class="lb-rank">${String(i+1).padStart(2,'0')}</span>
-      <span class="lb-stamp" style="--cat-color:${color}">${catAbbrev(cat)}</span>
-      <div class="lb-body">
-        <div class="lb-name">${escHTML(cat)}</div>
-        <div class="lb-track"><div class="lb-fill" style="width:${(v.count/max)*100}%;background:${color}"></div></div>
-        ${v.open>0 ? `<div class="lb-open"><span class="dot"></span>${v.open} unresolved</div>` : ''}
-      </div>
-      <span class="lb-count">${v.count}</span>
-      <span class="lb-arrow"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3.5 10.5 8 6 12.5"/></svg></span>
-    </button>`;
-  }).join('');
-}
-$('lb-list').addEventListener('click', e => {
-  const row = e.target.closest('.lb-row');
-  if(!row) return;
-  openDrawer(row.dataset.category, selectedCollege);
 });
 
 /* ── Drawer: ticket details (name + problem) ── */
@@ -571,14 +366,14 @@ function openDrawer(category, collegeScope){
   activeDrawerCategory = category;
   activeDrawerCollege = collegeScope || null;
   $('drawer-search-input').value = '';
-  const color = categoryColor(category);
+  const color = category ? categoryColor(category) : '#151515';
   $('drawer-stamp').style.setProperty('color', color);
   $('drawer-stamp').style.setProperty('border-color', color);
-  $('drawer-stamp').textContent = catAbbrev(category);
+  $('drawer-stamp').textContent = category ? catAbbrev(category) : (activeDrawerCollege||'?').slice(0,2).toUpperCase();
   $('drawer-eyebrow-text').textContent = activeDrawerCollege ? activeDrawerCollege : 'All colleges';
-  $('drawer-title').textContent = category;
+  $('drawer-title').textContent = category ? category : 'All categories';
   const list = drawerTickets();
-  $('drawer-meta').textContent = `${list.length} ticket${list.length===1?'':'s'} in this category`;
+  $('drawer-meta').textContent = `${list.length} ticket${list.length===1?'':'s'}`;
   renderDrawerList();
   $('drawer-overlay').classList.add('open');
   $('drawer').classList.add('open');
@@ -592,9 +387,9 @@ function closeDrawer(){
 $('drawer-overlay').addEventListener('click', closeDrawer);
 $('drawer-close-btn').addEventListener('click', closeDrawer);
 function drawerTickets(){
-  const base = activeDrawerCollege ? tickets.filter(t => (t.college||'Unspecified') === activeDrawerCollege) : tickets;
-  return base.filter(t => (t.category || 'Other') === activeDrawerCategory)
-             .sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+  let list = activeDrawerCollege ? tickets.filter(t => (t.college||'Unspecified') === activeDrawerCollege) : tickets;
+  if(activeDrawerCategory) list = list.filter(t => (t.category || 'Other') === activeDrawerCategory);
+  return list.slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
 }
 function renderDrawerList(){
   const q = ($('drawer-search-input').value||'').toLowerCase().trim();
@@ -633,13 +428,13 @@ function renderDrawerList(){
         <span class="tk-pill ${statusCls}">${statusLbl}</span>
         <span class="tk-pill pr-${prio}">${prio}</span>
         ${!activeDrawerCollege && t.college ? `<span class="tk-pill college">${escHTML(t.college)}</span>` : ''}
+        ${!activeDrawerCategory && t.category ? `<span class="tk-pill college">${escHTML(t.category)}</span>` : ''}
       </div>
     </div>`;
   }).join('');
   bodyEl.querySelectorAll('.tk-row').forEach(row => row.addEventListener('click', () => row.classList.toggle('expanded')));
 }
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDrawer(); });
-window.addEventListener('resize', () => { if(!tickets.length) return; renderMain(); });
 
 loadAll();
 </script>
