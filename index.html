@@ -80,6 +80,8 @@ body{font-family:'Inter',sans-serif;background:var(--ink-950);color:var(--paper)
 .mh-tick:last-child{border-right:none;}
 .mh-tick b{display:block;font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:800;color:var(--paper);letter-spacing:-.01em;}
 .mh-tick span{font-size:9.5px;color:var(--paper-faint);font-weight:700;text-transform:uppercase;letter-spacing:.07em;}
+.mh-tick.is-open b{color:var(--coral);}
+.mh-tick.is-resolved b{color:var(--mint);}
 .mh-toolrow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:20px;flex-wrap:wrap;}
 .view-toggle{display:none;gap:4px;background:var(--ink-900);border:1px solid var(--line);border-radius:11px;padding:4px;}
 .view-toggle.show{display:inline-flex;}
@@ -185,7 +187,7 @@ body{font-family:'Inter',sans-serif;background:var(--ink-950);color:var(--paper)
 }
 .mobile-menu-btn{display:none;width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--ink-900);align-items:center;justify-content:center;cursor:pointer;color:var(--paper);flex-shrink:0;}
 @media (prefers-reduced-motion:reduce){ *{animation:none !important;transition:none !important;} }
-  .hidden{display:none !important;}
+.hidden{display:none !important;}
 </style>
 </head>
 <body>
@@ -227,7 +229,8 @@ body{font-family:'Inter',sans-serif;background:var(--ink-950);color:var(--paper)
         <div class="mh-title" id="mh-title">All Colleges</div>
         <div class="mh-ticker">
           <div class="mh-tick"><b id="mh-stat-total">0</b><span>Tickets</span></div>
-          <div class="mh-tick"><b id="mh-stat-open">0</b><span>Unresolved</span></div>
+          <div class="mh-tick is-open"><b id="mh-stat-open">0</b><span>Unresolved</span></div>
+          <div class="mh-tick is-resolved"><b id="mh-stat-resolved">0</b><span>Resolved</span></div>
           <div class="mh-tick"><b id="mh-stat-cats">0</b><span>Categories</span></div>
         </div>
       </div>
@@ -442,6 +445,7 @@ function renderMain(){
   $('mh-crumb-current').textContent = selectedCollege === null ? 'All Colleges' : selectedCollege;
   $('mh-stat-total').textContent = scope.length;
   $('mh-stat-open').textContent = scope.filter(t => t.status !== 'resolved').length;
+  $('mh-stat-resolved').textContent = scope.filter(t => t.status === 'resolved').length;
   setViewToggleUI();
 
   const byCat = {};
