@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FACE Prep Campus — College Insights</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&family=Poppins:wght@600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#F4F5F7; --card:#FFFFFF; --border:#E7E9EC; --border-soft:#EFF1F3;
+  --text:#14151A; --text-light:#6B7280; --text-faint:#9AA1AC;
+  --slate-soft:#F1F3F6;
+  --brand-1:#D11AB3; --brand-2:#EF6E5C; --brand-3:#F6A968; --brand-4:#7C5CFC; --brand-5:#E879C6;
+  --brand-gradient:linear-gradient(120deg,var(--brand-1) 0%,var(--brand-2) 55%,var(--brand-3) 100%);
+  --shadow-sm:0 1px 2px rgba(20,21,26,0.05);
+  --shadow-md:0 6px 20px -8px rgba(20,21,26,0.12);
+  --shadow-lg:0 24px 56px -18px rgba(20,21,26,0.22);
+  --red:#DC2626; --amber:#D9840C; --green:#16A34A; --blue:#3457E8;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased;}
+::selection{background:var(--brand-1);color:#fff;}
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-thumb{background:#D8DCE2;border-radius:99px;}
+::-webkit-scrollbar-thumb:hover{background:#C3C9D1;}
+
+/* ── Shell ── */
+.shell{display:flex;height:100vh;overflow:hidden;}
+
+/* ── Sidebar ── */
+.sidebar{width:320px;flex-shrink:0;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;}
+.sidebar-head{padding:22px 20px 16px;border-bottom:1px solid var(--border-soft);position:relative;}
+.sidebar-head::after{content:'';position:absolute;left:20px;right:20px;bottom:-1px;height:3px;border-radius:99px 99px 0 0;background:var(--brand-gradient);}
+.sb-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--text-faint);}
+.sb-title{font-family:'Poppins',sans-serif;font-size:19px;font-weight:800;letter-spacing:-.01em;margin-top:4px;}
+.sb-sub{font-size:12px;color:var(--text-light);margin-top:5px;line-height:1.5;}
+.sb-search{margin:14px 20px 8px;position:relative;}
+.sb-search input{width:100%;padding:9px 12px 9px 32px;border-radius:10px;border:1px solid var(--border);background:var(--slate-soft);font-size:13px;color:var(--text);outline:none;transition:border-color .15s,background .15s;}
+.sb-search input:focus{border-color:var(--brand-1);background:#fff;}
+.sb-search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:13px;height:13px;color:var(--text-faint);pointer-events:none;}
+.sb-list{flex:1;overflow-y:auto;padding:6px 12px 20px;}
+.sb-item{display:flex;flex-direction:column;gap:7px;width:100%;text-align:left;padding:11px 12px;border-radius:12px;border:1px solid transparent;background:none;cursor:pointer;margin-bottom:3px;transition:background .12s,border-color .12s;}
+.sb-item:hover{background:var(--slate-soft);}
+.sb-item.active{background:linear-gradient(135deg,rgba(209,26,179,.07),rgba(246,169,104,.08));border-color:rgba(209,26,179,.25);}
+.sb-item-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.sb-item-name{font-size:13px;font-weight:700;color:var(--text);line-height:1.35;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.sb-item.active .sb-item-name{color:var(--brand-1);}
+.sb-item-count{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;color:var(--text-light);background:var(--slate-soft);border-radius:6px;padding:2px 7px;flex-shrink:0;}
+.sb-item.active .sb-item-count{background:#fff;color:var(--brand-1);}
+.sb-item-bar{display:flex;height:6px;border-radius:99px;overflow:hidden;background:var(--slate-soft);}
+.sb-item-bar span{height:100%;}
+.sb-allitem{position:relative;}
+.sb-allitem .sb-item-name{font-family:'Poppins',sans-serif;font-weight:800;}
+.sb-empty{padding:30px 14px;text-align:center;color:var(--text-faint);font-size:12.5px;}
+.sb-foot{padding:12px 20px 16px;border-top:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.sb-foot-meta{font-size:11px;color:var(--text-faint);line-height:1.5;}
+.sb-refresh{width:30px;height:30px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--text-light);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .12s,color .12s;}
+.sb-refresh:hover{background:var(--slate-soft);color:var(--text);}
+.sb-refresh svg{width:13px;height:13px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.sb-refresh.spinning svg{animation:spin .7s linear infinite;}
+
+/* ── Main ── */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.main-head{padding:24px 34px 0;flex-shrink:0;}
+.mh-crumb{font-size:12px;color:var(--text-faint);font-weight:600;display:flex;align-items:center;gap:7px;}
+.mh-crumb b{color:var(--brand-1);}
+.mh-titlerow{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-top:6px;flex-wrap:wrap;}
+.mh-title{font-family:'Poppins',sans-serif;font-size:26px;font-weight:800;letter-spacing:-.015em;}
+.mh-stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:4px;}
+.mh-stat{display:flex;flex-direction:column;gap:1px;}
+.mh-stat b{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--text);}
+.mh-stat span{font-size:10.5px;color:var(--text-faint);font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.mh-divider{height:1px;background:var(--border-soft);margin:18px 0 0;}
+
+.main-body{flex:1;min-height:0;overflow-y:auto;padding:22px 34px 40px;}
+
+/* category cards grid */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+.cat-card{position:relative;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 17px 15px;cursor:pointer;transition:transform .14s,box-shadow .14s,border-color .14s;overflow:hidden;text-align:left;}
+.cat-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;background:var(--cat-color,var(--brand-1));}
+.cat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--border);}
+.cat-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.cat-chip{width:9px;height:9px;border-radius:50%;background:var(--cat-color,var(--brand-1));flex-shrink:0;margin-top:5px;}
+.cat-name{font-size:13.5px;font-weight:700;color:var(--text);line-height:1.35;flex:1;}
+.cat-count{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:800;color:var(--text);margin-top:10px;}
+.cat-pct{font-size:11px;color:var(--text-faint);font-weight:600;margin-top:1px;}
+.cat-track{height:6px;border-radius:99px;background:var(--slate-soft);overflow:hidden;margin-top:10px;}
+.cat-fill{height:100%;background:var(--cat-color,var(--brand-1));border-radius:99px;transition:width .5s cubic-bezier(.16,1,.3,1);}
+.cat-open-sub{display:flex;align-items:center;gap:5px;margin-top:9px;font-size:10.5px;font-weight:700;color:var(--red);}
+.cat-open-sub .dot{width:6px;height:6px;border-radius:50%;background:var(--red);}
+.cat-arrow{position:absolute;bottom:14px;right:15px;color:var(--text-faint);opacity:0;transition:opacity .14s,transform .14s;}
+.cat-card:hover .cat-arrow{opacity:1;transform:translateX(2px);}
+
+.empty-block{padding:70px 20px;text-align:center;color:var(--text-light);}
+.empty-block svg{margin-bottom:14px;opacity:.7;}
+.empty-block strong{font-size:14.5px;display:block;color:var(--text);}
+.empty-block p{font-size:12.5px;color:var(--text-faint);margin-top:5px;}
+
+.skel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+.skel-card{height:126px;border-radius:16px;background:linear-gradient(90deg,var(--slate-soft) 25%,var(--border-soft) 37%,var(--slate-soft) 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite;}
+@keyframes shimmer{0%{background-position:100% 50%;}100%{background-position:0 50%;}}
+
+/* ── Drawer ── */
+.drawer-overlay{position:fixed;inset:0;background:rgba(20,21,26,.42);backdrop-filter:blur(1.5px);z-index:80;opacity:0;pointer-events:none;transition:opacity .2s;}
+.drawer-overlay.open{opacity:1;pointer-events:auto;}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(480px,92vw);background:var(--bg);z-index:90;box-shadow:var(--shadow-lg);transform:translateX(100%);transition:transform .28s cubic-bezier(.19,1,.22,1);display:flex;flex-direction:column;}
+.drawer.open{transform:translateX(0);}
+.drawer-head{background:var(--card);border-bottom:1px solid var(--border);padding:20px 22px;flex-shrink:0;position:relative;}
+.drawer-head::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--brand-gradient);}
+.drawer-head-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;}
+.drawer-eyebrow{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;}
+.drawer-eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--cat-color,var(--brand-1));}
+.drawer-title{font-family:'Poppins',sans-serif;font-size:18px;font-weight:800;margin-top:5px;letter-spacing:-.01em;}
+.drawer-meta{font-size:12px;color:var(--text-light);margin-top:4px;}
+.drawer-close{width:30px;height:30px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--text-light);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;transition:background .12s;}
+.drawer-close:hover{background:var(--slate-soft);color:var(--text);}
+.drawer-search{margin-top:14px;position:relative;}
+.drawer-search input{width:100%;padding:8px 12px 8px 30px;border-radius:9px;border:1px solid var(--border);background:var(--slate-soft);font-size:12.5px;outline:none;}
+.drawer-search input:focus{border-color:var(--brand-1);background:#fff;}
+.drawer-search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:12px;height:12px;color:var(--text-faint);}
+.drawer-body{flex:1;overflow-y:auto;padding:16px 22px 30px;}
+
+.tk-row{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:14px 15px;margin-bottom:10px;cursor:pointer;transition:border-color .12s,box-shadow .12s;}
+.tk-row:hover{border-color:#D8DCE2;box-shadow:var(--shadow-sm);}
+.tk-row-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.tk-who{display:flex;align-items:center;gap:9px;min-width:0;}
+.tk-avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;}
+.tk-name{font-size:13px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tk-roll{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-faint);}
+.tk-time{font-size:10.5px;color:var(--text-faint);flex-shrink:0;white-space:nowrap;margin-top:2px;}
+.tk-subject{font-size:13px;font-weight:600;color:var(--text);margin-top:9px;line-height:1.45;}
+.tk-desc{font-size:12px;color:var(--text-light);margin-top:5px;line-height:1.55;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.tk-row.expanded .tk-desc{-webkit-line-clamp:unset;}
+.tk-foot{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.tk-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;text-transform:uppercase;letter-spacing:.03em;}
+.tk-pill.college{background:var(--slate-soft);color:var(--text-light);text-transform:none;font-weight:600;letter-spacing:0;}
+.tk-pill.st-open{background:#FDECEC;color:var(--red);}
+.tk-pill.st-progress{background:#FDF3E3;color:var(--amber);}
+.tk-pill.st-resolved{background:#E9F8EF;color:var(--green);}
+.tk-pill.pr-high{background:var(--red);color:#fff;}
+.tk-pill.pr-medium{background:#FDF3E3;color:var(--amber);}
+.tk-pill.pr-low{background:var(--slate-soft);color:var(--text-light);}
+.drawer-empty{padding:40px 10px;text-align:center;color:var(--text-faint);font-size:12.5px;}
+
+@media (max-width:860px){
+  .sidebar{position:fixed;left:-320px;z-index:60;transition:left .22s;}
+  .sidebar.mobile-open{left:0;}
+  .main-head,.main-body{padding-left:18px;padding-right:18px;}
+  .mobile-menu-btn{display:flex !important;}
+}
+.mobile-menu-btn{display:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--card);align-items:center;justify-content:center;cursor:pointer;color:var(--text);flex-shrink:0;}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="sb-eyebrow">Campus Help Desk</div>
+      <div class="sb-title">College Insights</div>
+      <div class="sb-sub">Ticket volume by category, college by college.</div>
+    </div>
+    <div class="sb-search">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><line x1="10.8" y1="10.8" x2="14" y2="14"/></svg>
+      <input id="sb-search-input" type="text" placeholder="Search colleges…" oninput="renderSidebar()" />
+    </div>
+    <div class="sb-list" id="sb-list"></div>
+    <div class="sb-foot">
+      <div class="sb-foot-meta" id="sb-foot-meta">Loading…</div>
+      <button class="sb-refresh" id="sb-refresh-btn" onclick="loadAll(true)" title="Refresh">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13.5 2.5A6.5 6.5 0 1 1 8 1.5"/><polyline points="13.5,2.5 13.5,6 10,6"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="main-head">
+      <div class="mh-crumb">
+        <button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('mobile-open')">
+          <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/></svg>
+        </button>
+        College Insights / <b id="mh-crumb-current">All Colleges</b>
+      </div>
+      <div class="mh-titlerow">
+        <div class="mh-title" id="mh-title">All Colleges</div>
+        <div class="mh-stats">
+          <div class="mh-stat"><b id="mh-stat-total">0</b><span>Total tickets</span></div>
+          <div class="mh-stat"><b id="mh-stat-open">0</b><span>Unresolved</span></div>
+          <div class="mh-stat"><b id="mh-stat-cats">0</b><span>Categories</span></div>
+        </div>
+      </div>
+      <div class="mh-divider"></div>
+    </div>
+    <div class="main-body" id="main-body">
+      <div class="skel-grid" id="skel-grid">
+        <div class="skel-card"></div><div class="skel-card"></div><div class="skel-card"></div>
+        <div class="skel-card"></div><div class="skel-card"></div><div class="skel-card"></div>
+      </div>
+      <div class="cat-grid hidden" id="cat-grid"></div>
+      <div class="empty-block hidden" id="empty-block"></div>
+    </div>
+  </div>
+</div>
+
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="drawer-head-top">
+      <div style="min-width:0;">
+        <div class="drawer-eyebrow"><span class="dot" id="drawer-dot"></span><span id="drawer-eyebrow-text">Category</span></div>
+        <div class="drawer-title" id="drawer-title">—</div>
+        <div class="drawer-meta" id="drawer-meta">—</div>
+      </div>
+      <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-search">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><line x1="10.8" y1="10.8" x2="14" y2="14"/></svg>
+      <input id="drawer-search-input" type="text" placeholder="Search by name, roll no., problem…" oninput="renderDrawerList()" />
+    </div>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+<script>
+/* ── Supabase (same public tickets table as the main help-desk dashboard) ── */
+const SUPABASE_URL = 'https://rysajbwcuieovbsllaas.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5c2FqYndjdWllb3Zic2xsYWFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NjI3MjgsImV4cCI6MjA5NjAzODcyOH0.2WenjYKsfQYAeUJxVJcEVQwqYUlfwrYltrMuC9Ggu4A';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const $ = id => document.getElementById(id);
+const show = el => el.classList.remove('hidden');
+const hide = el => el.classList.add('hidden');
+function escHTML(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtRel(iso){
+  if(!iso) return '—';
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff/60000);
+  if(m<1) return 'just now';
+  if(m<60) return m+'m ago';
+  const h = Math.floor(m/60);
+  if(h<24) return h+'h ago';
+  const d = Math.floor(h/24);
+  if(d<30) return d+'d ago';
+  return new Date(iso).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+}
+function initials(name){
+  const parts = String(name||'?').trim().split(/\s+/);
+  return ((parts[0]?.[0]||'') + (parts[1]?.[0]||'')).toUpperCase() || '?';
+}
+function avatarColor(name){
+  const palette = ['#D11AB3','#7C5CFC','#EF6E5C','#3457E8','#16A34A','#D9840C','#E879C6','#0EA5A4'];
+  let h = 0; for(const c of String(name||'')) h = (h*31 + c.charCodeAt(0)) % 997;
+  return palette[h % palette.length];
+}
+const CATEGORY_PALETTE = ['#D11AB3','#3457E8','#16A34A','#D9840C','#7C5CFC','#EF6E5C','#0EA5A4','#DC2626','#E879C6','#64748B','#F6A968','#9333EA'];
+function categoryColor(cat){
+  let h = 0; for(const c of String(cat||'')) h = (h*31 + c.charCodeAt(0)) % 9973;
+  return CATEGORY_PALETTE[h % CATEGORY_PALETTE.length];
+}
+
+/* ── State ── */
+let tickets = [];
+let selectedCollege = null; // null = "All colleges"
+let activeDrawerCategory = null;
+let loading = true;
+
+async function loadAll(manual){
+  const btn = $('sb-refresh-btn');
+  if(manual && btn) btn.classList.add('spinning');
+  loading = true;
+  if(!tickets.length){ show($('skel-grid')); hide($('cat-grid')); hide($('empty-block')); }
+  try{
+    const { data, error } = await sb.from('tickets').select('*').order('created_at', { ascending:false });
+    if(error) throw error;
+    tickets = data || [];
+    $('sb-foot-meta').textContent = `Updated ${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}`;
+  }catch(e){
+    console.error(e);
+    $('sb-foot-meta').textContent = 'Could not load tickets';
+  }finally{
+    loading = false;
+    if(manual && btn) setTimeout(()=>btn.classList.remove('spinning'), 400);
+    renderSidebar();
+    renderMain();
+  }
+}
+
+/* ── Sidebar: college list with category-composition mini bars ── */
+function buildCollegeSummary(){
+  const map = {};
+  tickets.forEach(t => {
+    const c = t.college || 'Unspecified';
+    if(!map[c]) map[c] = { total:0, byCat:{} };
+    map[c].total++;
+    const cat = t.category || 'Other';
+    map[c].byCat[cat] = (map[c].byCat[cat]||0) + 1;
+  });
+  return map;
+}
+function renderSidebar(){
+  const listEl = $('sb-list');
+  const summary = buildCollegeSummary();
+  const q = ($('sb-search-input').value||'').toLowerCase().trim();
+  const allTotal = tickets.length;
+
+  let html = '';
+  // "All colleges" pinned item
+  if(!q){
+    const allActive = selectedCollege === null;
+    html += `<button class="sb-item sb-allitem ${allActive?'active':''}" onclick="selectCollege(null)">
+      <div class="sb-item-top">
+        <span class="sb-item-name">All Colleges</span>
+        <span class="sb-item-count">${allTotal}</span>
+      </div>
+      ${miniBarHTML(aggregateAllCategories())}
+    </button>`;
+  }
+
+  const names = Object.keys(summary).filter(n => n.toLowerCase().includes(q)).sort((a,b) => summary[b].total - summary[a].total);
+  if(!names.length){
+    listEl.innerHTML = html || `<div class="sb-empty">No colleges match “${escHTML(q)}”.</div>`;
+    return;
+  }
+  html += names.map(name => {
+    const s = summary[name];
+    const active = selectedCollege === name;
+    return `<button class="sb-item ${active?'active':''}" onclick="selectCollege(${JSON.stringify(name)})">
+      <div class="sb-item-top">
+        <span class="sb-item-name" title="${escHTML(name)}">${escHTML(name)}</span>
+        <span class="sb-item-count">${s.total}</span>
+      </div>
+      ${miniBarHTML(s.byCat)}
+    </button>`;
+  }).join('');
+  listEl.innerHTML = html;
+}
+function aggregateAllCategories(){
+  const byCat = {};
+  tickets.forEach(t => { const c = t.category || 'Other'; byCat[c] = (byCat[c]||0)+1; });
+  return byCat;
+}
+function miniBarHTML(byCat){
+  const total = Object.values(byCat).reduce((a,b)=>a+b,0);
+  if(!total) return `<div class="sb-item-bar"></div>`;
+  const segs = Object.entries(byCat).sort((a,b)=>b[1]-a[1]).map(([cat,val]) =>
+    `<span style="width:${(val/total*100)}%;background:${categoryColor(cat)}" title="${escHTML(cat)}: ${val}"></span>`).join('');
+  return `<div class="sb-item-bar">${segs}</div>`;
+}
+function selectCollege(name){
+  selectedCollege = name;
+  renderSidebar();
+  renderMain();
+}
+
+/* ── Main: category cards for the selected scope ── */
+function scopedTickets(){
+  return selectedCollege === null ? tickets : tickets.filter(t => (t.college||'Unspecified') === selectedCollege);
+}
+function renderMain(){
+  hide($('skel-grid'));
+  const scope = scopedTickets();
+  $('mh-title').textContent = selectedCollege === null ? 'All Colleges' : selectedCollege;
+  $('mh-crumb-current').textContent = selectedCollege === null ? 'All Colleges' : selectedCollege;
+  $('mh-stat-total').textContent = scope.length;
+  $('mh-stat-open').textContent = scope.filter(t => t.status !== 'resolved').length;
+
+  const byCat = {};
+  scope.forEach(t => {
+    const cat = t.category || 'Other';
+    if(!byCat[cat]) byCat[cat] = { count:0, open:0 };
+    byCat[cat].count++;
+    if(t.status !== 'resolved') byCat[cat].open++;
+  });
+  const cats = Object.entries(byCat).sort((a,b) => b[1].count - a[1].count);
+  $('mh-stat-cats').textContent = cats.length;
+
+  const gridEl = $('cat-grid');
+  const emptyEl = $('empty-block');
+  if(!scope.length){
+    hide(gridEl);
+    show(emptyEl);
+    emptyEl.innerHTML = `
+      <svg width="110" height="82" viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="15" y="20" width="90" height="58" rx="10" fill="var(--slate-soft)" stroke="var(--border)" stroke-width="1.5"/>
+        <path d="M15 34h90" stroke="var(--border)" stroke-width="1.5"/>
+        <rect x="30" y="44" width="60" height="7" rx="3.5" fill="var(--border)"/>
+        <rect x="30" y="56" width="40" height="7" rx="3.5" fill="var(--border)"/>
+      </svg>
+      <strong>No tickets yet</strong>
+      <p>${selectedCollege ? escHTML(selectedCollege) + ' has no tickets on record.' : 'Nothing to show yet.'}</p>`;
+    return;
+  }
+  hide(emptyEl);
+  show(gridEl);
+  const max = Math.max(...cats.map(([,v]) => v.count), 1);
+  gridEl.innerHTML = cats.map(([cat, v]) => {
+    const color = categoryColor(cat);
+    const pct = Math.round((v.count/scope.length)*100);
+    const fillPct = (v.count/max)*100;
+    return `<button class="cat-card" style="--cat-color:${color}" onclick="openDrawer(${JSON.stringify(cat)})">
+      <div class="cat-card-top">
+        <span class="cat-chip"></span>
+        <span class="cat-name">${escHTML(cat)}</span>
+      </div>
+      <div class="cat-count">${v.count}</div>
+      <div class="cat-pct">${pct}% of ${selectedCollege ? 'this college' : 'all tickets'}</div>
+      <div class="cat-track"><div class="cat-fill" style="width:${fillPct}%"></div></div>
+      ${v.open > 0 ? `<div class="cat-open-sub"><span class="dot"></span>${v.open} unresolved</div>` : ''}
+      <span class="cat-arrow">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3.5 10.5 8 6 12.5"/></svg>
+      </span>
+    </button>`;
+  }).join('');
+}
+
+/* ── Drawer: ticket details for a category (name + problem) ── */
+function openDrawer(category){
+  activeDrawerCategory = category;
+  $('drawer-search-input').value = '';
+  const color = categoryColor(category);
+  $('drawer-dot').style.background = color;
+  $('drawer-eyebrow-text').textContent = selectedCollege ? escHTML(selectedCollege) : 'All colleges';
+  $('drawer-title').textContent = category;
+  const list = drawerTickets();
+  $('drawer-meta').textContent = `${list.length} ticket${list.length===1?'':'s'} in this category`;
+  renderDrawerList();
+  show($('drawer-overlay')); $('drawer-overlay').classList.add('open');
+  $('drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer(){
+  $('drawer-overlay').classList.remove('open');
+  $('drawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function drawerTickets(){
+  const scope = scopedTickets();
+  return scope.filter(t => (t.category || 'Other') === activeDrawerCategory)
+              .sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+}
+function renderDrawerList(){
+  const q = ($('drawer-search-input').value||'').toLowerCase().trim();
+  let list = drawerTickets();
+  if(q){
+    list = list.filter(t =>
+      (t.student_name||'').toLowerCase().includes(q) ||
+      (t.roll_number||'').toLowerCase().includes(q) ||
+      (t.subject||'').toLowerCase().includes(q) ||
+      (t.description||'').toLowerCase().includes(q) ||
+      (t.college||'').toLowerCase().includes(q));
+  }
+  const bodyEl = $('drawer-body');
+  if(!list.length){
+    bodyEl.innerHTML = `<div class="drawer-empty">No matching tickets.</div>`;
+    return;
+  }
+  bodyEl.innerHTML = list.map(t => {
+    const statusCls = {open:'st-open',progress:'st-progress',resolved:'st-resolved'}[t.status] || 'st-open';
+    const statusLbl = {open:'Unresolved',progress:'In Progress',resolved:'Resolved'}[t.status] || t.status;
+    const prio = t.priority || 'medium';
+    return `<div class="tk-row" onclick="this.classList.toggle('expanded')">
+      <div class="tk-row-top">
+        <div class="tk-who">
+          <div class="tk-avatar" style="background:${avatarColor(t.student_name)}">${initials(t.student_name)}</div>
+          <div style="min-width:0;">
+            <div class="tk-name" title="${escHTML(t.student_name)}">${escHTML(t.student_name || 'Unknown student')}</div>
+            <div class="tk-roll">#${escHTML(t.roll_number || '—')}</div>
+          </div>
+        </div>
+        <div class="tk-time">${fmtRel(t.created_at)}</div>
+      </div>
+      <div class="tk-subject">${escHTML(t.subject || '(No subject)')}</div>
+      ${t.description ? `<div class="tk-desc">${escHTML(t.description)}</div>` : ''}
+      <div class="tk-foot">
+        <span class="tk-pill ${statusCls}">${statusLbl}</span>
+        <span class="tk-pill pr-${prio}">${prio}</span>
+        ${!selectedCollege && t.college ? `<span class="tk-pill college">${escHTML(t.college)}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeDrawer();
+});
+
+loadAll();
+</script>
+</body>
+</html>
